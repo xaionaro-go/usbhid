@@ -11,38 +11,57 @@
 package usbhid
 
 /*
-#cgo CFLAGS: -I./hidapi/hidapi
+#cgo CFLAGS: -I./c/hidapi -I./c/libusb
 
-#cgo linux CFLAGS: -I./libusb/libusb -DDEFAULT_VISIBILITY="" -DOS_LINUX -D_GNU_SOURCE -DPOLL_NFDS_TYPE=int
+#cgo linux CFLAGS: -DDEFAULT_VISIBILITY="" -DOS_LINUX -D_GNU_SOURCE -DPOLL_NFDS_TYPE=int
 #cgo linux,!android LDFLAGS: -lrt
-#cgo darwin CFLAGS: -DOS_DARWIN
-#cgo darwin LDFLAGS: -framework CoreFoundation -framework IOKit
-#cgo windows CFLAGS: -DOS_WINDOWS
+#cgo darwin CFLAGS: -DOS_DARWIN -DDEFAULT_VISIBILITY="" -DPOLL_NFDS_TYPE="unsigned int"
+#cgo darwin LDFLAGS: -framework CoreFoundation -framework IOKit -lobjc
+#cgo windows CFLAGS: -DOS_WINDOWS -DDEFAULT_VISIBILITY="" -DPOLL_NFDS_TYPE="unsigned int"
 #cgo windows LDFLAGS: -lsetupapi
+
 
 #ifdef OS_LINUX
 	#include <sys/poll.h>
+
 	#include "os/threads_posix.c"
 	#include "os/poll_posix.c"
-
 	#include "os/linux_usbfs.c"
 	#include "os/linux_netlink.c"
-
-	#include "core.c"
-	#include "descriptor.c"
-	#include "hotplug.c"
-	#include "io.c"
-	#include "strerror.c"
-	#include "sync.c"
-
-	#include "hidapi/libusb/hid.c"
 #elif OS_DARWIN
-	#include "hidapi/mac/hid.c"
+	#include <sys/poll.h>
+
+	#include "os/threads_posix.c"
+	#include "os/poll_posix.c"
+	#include "os/darwin_usb.c"
 #elif OS_WINDOWS
-	#include "hidapi/windows/hid.c"
+	#include <oledlg.h>
+
+  #include "os/poll_windows.c"
+	#include "os/threads_windows.c"
 #endif
+
+#include "core.c"
+#include "descriptor.c"
+#include "hotplug.c"
+#include "io.c"
+#include "strerror.c"
+#include "sync.c"
+
+#ifdef OS_LINUX
+	#include "linux/hid.c"
+#elif OS_DARWIN
+	#include "mac/hid.c"
+#elif OS_WINDOWS
+	#include "windows/hid.c"
+
+	#include "os/windows_nt_common.c"
+	#include "os/windows_winusb.c"
+#endif
+
 */
 import "C"
+
 import (
 	"errors"
 	"runtime"
