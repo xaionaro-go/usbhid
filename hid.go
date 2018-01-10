@@ -8,7 +8,7 @@
 
 // +build linux,cgo darwin,!ios,cgo windows,cgo
 
-package hid
+package usbhid
 
 /*
 #cgo CFLAGS: -I./hidapi/hidapi
