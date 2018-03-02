@@ -163,7 +163,7 @@ func (info HidDeviceInfo) Open() (*HidDevice, error) {
 	}
 	return &HidDevice{
 		HidDeviceInfo: info,
-		device:     device,
+		device:        device,
 	}, nil
 }
 
