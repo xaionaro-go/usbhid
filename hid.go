@@ -53,7 +53,6 @@ package usbhid
 #ifdef OS_LINUX
 	#include "os/poll_posix.h"
 	#include "os/poll_posix.c"
-	#include "os/threads_posix.c"
 	#include "os/linux_usbfs.h"
 	#include "os/linux_usbfs.c"
 	#include "os/linux_netlink.c"
