@@ -68,8 +68,7 @@ static inline int usbi_cond_wait(usbi_cond_t *cond, usbi_mutex_t *mutex)
 {
 	return pthread_cond_wait(cond, mutex);
 }
-int usbi_cond_timedwait(usbi_cond_t *cond,
-	usbi_mutex_t *mutex, const struct timeval *tv);
+
 static inline void usbi_cond_broadcast(usbi_cond_t *cond)
 {
 	(void)pthread_cond_broadcast(cond);
