@@ -1280,7 +1280,7 @@ static int windows_get_device_list(struct libusb_context *ctx, struct discovered
 //#define ENUM_DEBUG
 #if defined(ENABLE_LOGGING) && defined(ENUM_DEBUG)
 		const char *passname[] = { "HCD", "HUB", "GEN", "DEV", "HID", "EXT" };
-		usbi_dbg("#### PROCESSING %ss %s", passname[(pass <= HID_PASS) ? pass : (HID_PASS + 1)],
+		usbi_dbg("#### PROCESSING %ss %s", passname[pass],
 			(pass != GEN_PASS) ? guid_to_string(guid[pass]) : "");
 #endif
 		for (i = 0; ; i++) {
@@ -1340,6 +1340,12 @@ static int windows_get_device_list(struct libusb_context *ctx, struct discovered
 					(unsigned int)dev_info_data.DevInst);
 				continue;
 			}
+
+			if (strstr(dev_id_path, "HUB") == NULL && strstr(dev_id_path, HARDCODED_DEVICE_FILTER) == NULL && pass != HCD_PASS && pass != HUB_PASS) {
+				usbi_warn(ctx, "Device '%s' not satisfying filter, skipping (pass %d)", dev_id_path, pass);
+				continue;
+			}
+
 #ifdef ENUM_DEBUG
 			usbi_dbg("PRO: %s", dev_id_path);
 #endif
